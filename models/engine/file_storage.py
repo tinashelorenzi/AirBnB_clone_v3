@@ -9,6 +9,10 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 import shlex
+import hashlib
+
+classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 class FileStorage:
@@ -78,3 +82,24 @@ class FileStorage:
         """ calls reload()
         """
         self.reload()
+
+    def count(self, cls=None):
+        """Counts the number of appended objects available in storage"""
+        all_classes = classes.values()
+        if not cls:
+            count = 0
+            for val in all_classes:
+                count += len(models.storage.all(val).values())
+        else:
+            count = len(models.storage.all(cls).values())
+        return (count)
+
+    def get(self, cls, id):
+        """Searches for object and returns it based on given id"""
+        if cls not in classes.values():
+            return None
+        all_classes = models.storage.all(cls)
+        for v in all_classes.values():
+            if (v.id == id):
+                return v
+        return None
