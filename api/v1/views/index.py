@@ -11,9 +11,9 @@ from models.state import State
 from models.user import User
 
 
-classes = { "amenities": Amenity, "cities": City, "places": Place,
+classes = {"amenities": Amenity, "cities": City, "places": Place,
            "reviews": Review, "states": State, "users": User
-        }
+           }
 
 
 @app_views.route("/status")
