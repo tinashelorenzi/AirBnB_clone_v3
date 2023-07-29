@@ -78,6 +78,6 @@ class BaseModel:
         return my_dict
 
     def delete(self):
-        """ delete object
+        """ delete objectcurl -X GET http://0.0.0.0:5000/api/v1/stats
         """
         models.storage.delete(self)

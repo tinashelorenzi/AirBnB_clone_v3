@@ -93,6 +93,17 @@ class DBStorage:
 
     def count(self, cls=None):
         """Counts the number of objects in storage"""
-        if (cls):
-            return (len(self.all(cls)))
-        return (len(self.all()))
+        obj_dict = {}
+        if cls:
+            obj_class = self.__session.query(self.CNC.get(cls)).all()
+            for item in obj_class:
+                obj_dict[item.id] = item
+            return len(obj_dict)
+        else:
+            for cls_name in self.CNC:
+                if cls_name == 'BaseModel':
+                    continue
+                obj_class = self.__session.query(self.CNC.get(cls_name)).all()
+                for item in obj_class:
+                    obj_dict[item.id] = item
+            return len(obj_dict)

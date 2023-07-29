@@ -90,6 +90,19 @@ class FileStorage:
 
     def count(self, cls=None):
         """Counts the number of objects in storage"""
-        if (cls):
-            return (len(self.all(cls)))
-        return (len(self.all()))
+        if cls:
+            obj_list = []
+            obj_dict = FileStorage.__objects.values()
+            for item in obj_dict:
+                if type(item).__name__ == cls:
+                    obj_list.append(item)
+            return len(obj_list)
+        else:
+            obj_list = []
+            for class_name in self.CNC:
+                if class_name == 'BaseModel':
+                    continue
+                obj_class = FileStorage.__objects
+                for item in obj_class:
+                    obj_list.append(item)
+            return len(obj_list)
