@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""BluePrint to the api pieces"""
 from flask import Blueprint
 """Initializes the Blueprint"""
 
