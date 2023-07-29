@@ -94,7 +94,4 @@ class DBStorage:
         """Counts the number of objects in storage"""
         if (cls):
             return (len(self.all(cls)))
-<<<<<<< HEAD
         return (len(self.all()))
-=======
->>>>>>> 432efff6abbe069342626512a87f324c758d0daf
