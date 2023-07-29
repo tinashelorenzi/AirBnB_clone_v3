@@ -86,27 +86,6 @@ class DBStorage:
         """
         self.__session.close()
 
-    #def count(self, cls=None):
-    #    """Counts the number of appended objects available in storage"""
-    #    all_classes = classes.values()
-    #    if not cls:
-    #        count = 0
-    #        for val in all_classes:
-    #            count += len(models.storage.all(val).values())
-    #    else:
-    #        count = len(models.storage.all(cls).values())
-    #    return (count)
-
-    #def get(self, cls, id):
-    #    """Searches for object and returns it based on given id"""
-    #    if cls not in classes.values():
-    #        return None
-    #    all_classes = models.storage.all(cls)
-    #    for v in all_classes.values():
-    #        if (v.id == id):
-    #            return v
-    #    return None
-    
     def get(self, cls, id):
         """A method to retrieve one object"""
         classes = self.all(cls)
