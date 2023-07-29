@@ -11,10 +11,6 @@ from models.user import User
 from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
-from os import getenv
-
-classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 class DBStorage:
@@ -87,28 +83,6 @@ class DBStorage:
         """
         self.__session.close()
 
-<<<<<<< HEAD
-    def count(self, cls=None):
-        """Counts the number of appended objects available in storage"""
-        all_classes = classes.values()
-        if not cls:
-            count = 0
-            for val in all_classes:
-                count += len(models.storage.all(val).values())
-        else:
-            count = len(models.storage.all(cls).values())
-        return (count)
-
-    def get(self, cls, id):
-        """Searches for object and returns it based on given id"""
-        if cls not in classes.values():
-            return None
-        all_classes = models.storage.all(cls)
-        for v in all_classes.values():
-            if (v.id == id):
-                return v
-        return None
-=======
     def get(self, cls, id):
         """A method to retrieve one object"""
         classes = self.all(cls)
@@ -122,4 +96,3 @@ class DBStorage:
         if (cls):
             return (len(self.all(cls)))
         return (len(self.all()))
->>>>>>> storage_get_count
