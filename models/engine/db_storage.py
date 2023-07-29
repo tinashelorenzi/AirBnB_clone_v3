@@ -10,10 +10,6 @@ from models.user import User
 from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
-from os import getenv
-
-classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 class DBStorage:
@@ -98,4 +94,7 @@ class DBStorage:
         """Counts the number of objects in storage"""
         if (cls):
             return (len(self.all(cls)))
+<<<<<<< HEAD
         return (len(self.all()))
+=======
+>>>>>>> 432efff6abbe069342626512a87f324c758d0daf
