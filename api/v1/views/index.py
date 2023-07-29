@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-"""Module for function that defines the handles for incoming requests"""
+"""
+Module for function that defines the handles for incoming requests to
+different routes
+"""
 from api.v1.views import app_views
 from flask import jsonify
 from models import storage
@@ -13,7 +16,9 @@ from models.user import User
 
 @app_views.route("/status")
 def status():
-    """Handles status request"""
+    """
+    Handles status request by returning a JSON with 'status' value OK
+    """
     return (jsonify({"status": "OK"}))
 
 
@@ -26,4 +31,4 @@ def stats():
     stats = {}
     for key, value in classes.items():
         stats[key] = storage.count(value)
-    return (jsonify(stats), 404)
+    return (jsonify(stats))
