@@ -33,7 +33,7 @@ def get_place(place_id):
 	place = storage.get(Place, place_id)
 	if not place:
 		abort(404)
-	return jsonify(place.to_dict())
+	return (jsonify(place.to_dict()))
 
 
 @app_views.route('/places/<place_id>', methods=['DELETE'],
@@ -49,7 +49,7 @@ def delete_place(place_id):
 	storage.delete(place)
 	storage.save()
 
-	return make_response(jsonify({}), 200)
+	return (make_response(jsonify({}), 200))
 
 
 @app_views.route('/cities/<city_id>/places', methods=['POST'],
@@ -77,7 +77,7 @@ def post_place(city_id):
 	instance.city_id = city.id
 	instance.user_id = user.id
 	instance.save()
-	return make_response(jsonify(instance.to_dict()), 201)
+	return (make_response(jsonify(instance.to_dict()), 201))
 
 
 @app_views.route('/places/<place_id>', methods=['PUT'], strict_slashes=False)
@@ -99,4 +99,4 @@ def put_place(place_id):
 		if key not in ignore:
 			setattr(place, key, value)
 	storage.save()
-	return make_response(jsonify(place.to_dict()), 200)
+	return (make_response(jsonify(place.to_dict()), 200))
