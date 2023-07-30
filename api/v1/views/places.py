@@ -92,11 +92,11 @@ def put_place(place_id):
 	if not request.get_json():
 		abort(400, description="Not a JSON")
 
-	ignore = ['id', 'state_id', 'created_at', 'updated_at']
+	ignore = ['id', 'user_id', 'city_id', 'created_at', 'updated_at']
 
 	data = request.get_json()
 	for key, value in data.items():
 		if key not in ignore:
 			setattr(place, key, value)
 	storage.save()
-	return make_response(jsonify(city.to_dict()), 200)
+	return make_response(jsonify(place.to_dict()), 200)
