@@ -21,7 +21,11 @@ def get_place_amenities(place_id):
 
     if environ.get("HBNB_TYPE_STORAGE") == "db":
         return (jsonify(place.amenities))
-    return (jsonify(place.amenity_ids))
+
+    amenities = []
+    for ids place.amenity_ids:
+        amenities.append(storage.get(Amenity, ids))
+    return (jsonify(amenities))
 
 
 @app_views.route("/places/<place_id>/amenities/<amenity_id>",
@@ -57,7 +61,11 @@ def post_place_amenity(place_id, amenity_id):
         abort(404)
     if amenity in place.amenities:
         return (make_response(jsonify(amenity.to_dict()), 200))
-    place.amenities.append(place)
+    
+    if environ.get("HBNB_TYPE_STORAGE") == "db":
+        place.amenities.append(amenity)
+    else:
+        place.amenity_ids.append(amenity.id)
     storage.save()
 
     return (make_response(jsonify(amenity.to_dict()), 201))
