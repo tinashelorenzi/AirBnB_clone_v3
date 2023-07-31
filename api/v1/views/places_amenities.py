@@ -23,7 +23,7 @@ def get_place_amenities(place_id):
         return (jsonify(place.amenities))
 
     amenities = []
-    for ids place.amenity_ids:
+    for ids in place.amenity_ids:
         amenities.append(storage.get(Amenity, ids))
     return (jsonify(amenities))
 
