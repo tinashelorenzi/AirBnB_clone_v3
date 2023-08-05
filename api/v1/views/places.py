@@ -3,6 +3,7 @@
 from models.city import City
 from models.place import Place
 from models.user import User
+from models.amenity import Amenity
 from models import storage
 from api.v1.views import app_views
 from flask import abort, jsonify, make_response, request
@@ -100,3 +101,88 @@ def put_place(place_id):
             setattr(place, key, value)
     storage.save()
     return make_response(jsonify(place.to_dict()), 200)
+
+
+@app_views.route("/places_search", methods=["POST"], strict_slashes=False)
+def places_search():
+    """
+    Searches returns a place depending on the JSON in the body of the request
+    """
+    if not request.get_json():
+        abort(400, description="Not a JSON")
+
+    data = request.get_json()
+    places = []
+    if (len(data) == 0 or all(len(v) == 0 for k, v in data.items())):
+        # Case: All lists are empty
+        # Retrieves all Place objects and returns them because
+        # All lists are empty
+        for k, v in storage.all(Place):
+            places.append(v)
+            return (jsonify(places))
+    elif any(len(v) == 0 for k, v in data.items()):
+        if (len(data["states"]) == 0 and len(data["cities"]) == 0):
+            # Case: states and cities lists are empty, excluding amenities
+            # Retrieves all Place objects, doesn't return until filtered with
+            # amenities
+
+            for k, v in storage.all(Place):
+                places.append(v)
+        elif (len(data["states"]) == 0 and len(data["cities"]) != 0):
+            # Case: states list is empty but not cities
+            # Retrieves all cities and then all places from those cities
+            cities = []
+
+            for city_id in data["cities"]:
+                cities.append(storage.get(City, city_id))
+
+            for city in cities:
+                places += city.places
+
+        elif (len(data["states"]) != 0 and len(data["cities"]) == 0):
+            # Case: cities list is empty but not states
+            # Retrieves all states and then the places in the cities in the
+            # states
+            states = []
+
+            for state_id in data["states"]:
+                states.append(storage.get(State, state_id))
+
+            for state in states:
+                for city in state.cities:
+                    places += city.places
+    else:
+        # Case: cities and states list are not empty
+        # Retrieves all states and the all cities and the all unique places in
+        # both of the adding places in the State objects first
+        states = []
+        cities = []
+
+        for state_id in data["states"]:
+            states.append(storage.get(State, state_id))
+
+        for city_id in data["cities"]:
+            cities.append(storage.get(City, state_id))
+
+        for state in states:
+            for city in state.cities:
+                place += city.places
+
+        for city in cities:
+            for place in city.places:
+                if place not in places:
+                    places.append(place)
+
+    if len(data["amenities"]) != 0:
+        # Filters places results to include only places with the specified
+        # amenity
+        amenities = []
+        for amenity_id in data["amenities"]:
+            ameities.append(storage.get(Amenity, amenity_id))
+
+        for place in places:
+            for amenity in amenities:
+                if amenity not in place.amenities:
+                    places.remove(place)
+                    continue
+    return (jsonify(places))
