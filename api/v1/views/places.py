@@ -174,16 +174,17 @@ def places_search():
                 if place not in places:
                     places.append(place)
 
-    if len(data["amenities"]) != 0:
-        # Filters places results to include only places with the specified
-        # amenity
-        amenities = []
-        for amenity_id in data["amenities"]:
-            ameities.append(storage.get(Amenity, amenity_id))
+    if "amenities" in data:
+        if len(data["amenities"]) != 0:
+            # Filters places results to include only places with the specified
+            # amenity
+            amenities = []
+            for amenity_id in data["amenities"]:
+                ameities.append(storage.get(Amenity, amenity_id))
 
-        for place in places:
-            for amenity in amenities:
-                if amenity not in place.amenities:
-                    places.remove(place)
-                    continue
+            for place in places:
+                for amenity in amenities:
+                    if amenity not in place.amenities:
+                        places.remove(place)
+                        continue
     return (jsonify(places))
